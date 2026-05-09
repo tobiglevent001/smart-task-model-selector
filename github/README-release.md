@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/your-username/smart-task-model-selector/main/assets/logo.png" alt="Smart Task-Model Selector" width="200"/>
+  <img src="https://raw.githubusercontent.com/tobiglevent001/smart-task-model-selector/main/assets/logo.png" alt="Smart Task-Model Selector" width="200"/>
 </p>
 
 <h1 align="center">Smart Task-Model Selector</h1>
@@ -9,11 +9,11 @@
   <a href="https://www.npmjs.com/package/smart-task-model-selector">
     <img src="https://img.shields.io/npm/v/smart-task-model-selector?style=flat-square" alt="npm"/>
   </a>
-  <a href="https://github.com/your-username/smart-task-model-selector/blob/main/LICENSE">
+  <a href="https://github.com/tobiglevent001/smart-task-model-selector/blob/main/LICENSE">
     <img src="https://img.shields.io/npm/l/smart-task-model-selector?style=flat-square" alt="MIT"/>
   </a>
-  <a href="https://github.com/your-username/smart-task-model-selector/stargazers">
-    <img src="https://img.shields.io/github/stars/your-username/smart-task-model-selector?style=flat-square" alt="stars"/>
+  <a href="https://github.com/tobiglevent001/smart-task-model-selector/stargazers">
+    <img src="https://img.shields.io/github/stars/tobiglevent001/smart-task-model-selector?style=flat-square" alt="stars"/>
   </a>
 </p>
 
@@ -58,14 +58,14 @@ smart-model-selector "开发一个跨境电商网站"
 
 ```bash
 # CodeBuddy
-git clone https://github.com/your-username/smart-task-model-selector.git \
+git clone https://github.com/tobiglevent001/smart-task-model-selector.git \
   ~/.workbuddy/skills/Smart\ Task-Model\ Selector/
 
 # npm
 npm install -g smart-task-model-selector
 
 # 源代码
-git clone https://github.com/your-username/smart-task-model-selector.git
+git clone https://github.com/tobiglevent001/smart-task-model-selector.git
 cd smart-task-model-selector
 npm install
 ```

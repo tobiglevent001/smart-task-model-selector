@@ -6,7 +6,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/your-username/smart-task-model-selector.git
+git clone https://github.com/tobiglevent001/smart-task-model-selector.git
 cd smart-task-model-selector
 
 # 安装依赖（如需要）

@@ -4,7 +4,7 @@
 [![npm version](assets/badge-version.svg)](assets/badge-version.svg)
 [![npm](assets/badge-npm.svg)](assets/badge-npm.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg)](https://github.com/your-username/smart-task-model-selector)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg)](https://github.com/tobiglevent001/smart-task-model-selector)
 [![Language: JavaScript](https://img.shields.io/badge/Language-JavaScript-green.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 > 智能 AI 模型推荐工具 - 根据任务类型、Token 预估、成本预算自动推荐最优模型
@@ -332,7 +332,7 @@ manager.resetConfig();
 
 1. **下载或克隆项目**
    ```bash
-   git clone https://github.com/your-username/smart-task-model-selector.git
+   git clone https://github.com/tobiglevent001/smart-task-model-selector.git
    ```
 
 2. **放置到 Skills 目录**
@@ -388,7 +388,7 @@ Smart Task-Model Selector/
 
 ```bash
 # 克隆项目
-git clone https://github.com/your-username/smart-task-model-selector.git
+git clone https://github.com/tobiglevent001/smart-task-model-selector.git
 cd smart-task-model-selector
 
 # 安装依赖
@@ -432,7 +432,7 @@ npm test -- --grep "token estimation"
 
 ### 问题反馈
 
-- 使用 [GitHub Issues](https://github.com/your-username/smart-task-model-selector/issues) 报告 Bug
+- 使用 [GitHub Issues](https://github.com/tobiglevent001/smart-task-model-selector/issues) 报告 Bug
 - 提交功能请求时请详细说明使用场景
 - 建议附上示例输入和期望输出
 
@@ -446,8 +446,8 @@ npm test -- --grep "token estimation"
 
 ## 🔗 相关链接
 
-- [GitHub 仓库](https://github.com/your-username/smart-task-model-selector)
-- [问题反馈](https://github.com/your-username/smart-task-model-selector/issues)
+- [GitHub 仓库](https://github.com/tobiglevent001/smart-task-model-selector)
+- [问题反馈](https://github.com/tobiglevent001/smart-task-model-selector/issues)
 - [版本历史](github/CHANGELOG.md)
 
 ---

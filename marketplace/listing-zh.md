@@ -42,7 +42,7 @@
 
 ```bash
 # 克隆到skills目录
-git clone https://github.com/your-username/smart-task-model-selector.git ~/.workbuddy/skills/Smart\ Task-Model\ Selector/
+git clone https://github.com/tobiglevent001/smart-task-model-selector.git ~/.workbuddy/skills/Smart\ Task-Model\ Selector/
 ```
 
 ---

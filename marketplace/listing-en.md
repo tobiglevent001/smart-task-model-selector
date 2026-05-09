@@ -41,7 +41,7 @@ For a typical 1000-token response:
 
 ```bash
 # Clone to your skills directory
-git clone https://github.com/your-username/smart-task-model-selector.git ~/.workbuddy/skills/Smart Task-Model\ Selector/
+git clone https://github.com/tobiglevent001/smart-task-model-selector.git ~/.workbuddy/skills/Smart Task-Model\ Selector/
 ```
 
 ## Requirements

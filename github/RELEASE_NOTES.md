@@ -37,4 +37,4 @@
 
 ---
 
-**反馈渠道**: https://github.com/your-username/smart-task-model-selector/issues
+**反馈渠道**: https://github.com/tobiglevent001/smart-task-model-selector/issues
