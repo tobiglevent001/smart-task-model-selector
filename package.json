@@ -25,16 +25,16 @@
     "cny",
     "usd"
   ],
-  "author": "Your Name",
+  "author": "tobiglevent001",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/smart-task-model-selector"
+    "url": "https://github.com/tobiglevent001/smart-task-model-selector"
   },
   "bugs": {
-    "url": "https://github.com/your-username/smart-task-model-selector/issues"
+    "url": "https://github.com/tobiglevent001/smart-task-model-selector/issues"
   },
-  "homepage": "https://github.com/your-username/smart-task-model-selector#readme",
+  "homepage": "https://github.com/tobiglevent001/smart-task-model-selector#readme",
   "engines": {
     "node": ">=16.0.0"
   },
