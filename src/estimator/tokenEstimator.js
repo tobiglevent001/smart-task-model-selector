@@ -8,6 +8,37 @@ class TokenEstimator {
     // 加载模型配置
     this.taskTypes = this.loadTaskTypes();
     this.historyData = this.loadHistoryData();
+    // 英文任务类型名称映射到中文（内部使用中文作为标准键）
+    this.taskNameMap = {
+      'Code Generation': '代码生成',
+      'Code Review': '代码审查',
+      'Code Debugging': '代码调试',
+      'Content Writing': '文案写作',
+      'Translation': '翻译',
+      'Search & Research': '搜索研究',
+      'Data Analysis': '数据分析',
+      'AI Art Generation': 'AI 绘画',
+      'Image Processing': '图片处理',
+      // Keep Chinese mappings for backward compatibility
+      '代码生成': '代码生成',
+      '代码审查': '代码审查',
+      '代码调试': '代码调试',
+      '文案写作': '文案写作',
+      '翻译': '翻译',
+      '搜索研究': '搜索研究',
+      '数据分析': '数据分析',
+      'AI 绘画': 'AI 绘画',
+      '图片处理': '图片处理'
+    };
+    // 复杂度名称映射
+    this.complexityNameMap = {
+      'Simple': '简单',
+      'Medium': '中等',
+      'Complex': '复杂',
+      '简单': '简单',
+      '中等': '中等',
+      '复杂': '复杂'
+    };
     // 价格参考基准
     this.priceReference = {
       domestic: {
@@ -22,6 +53,8 @@ class TokenEstimator {
       }
     };
     this.exchangeRate = 7.2; // 1 USD = 7.2 CNY
+    // i18n instance (optional, set externally)
+    this.i18n = null;
   }
   
   /**
@@ -92,15 +125,19 @@ class TokenEstimator {
    * 获取基础 Token 预估
    */
   getBaseEstimate(taskType, complexity) {
-    const task = this.taskTypes.find(t => t.name === taskType);
+    // Translate English task type / complexity to Chinese internal keys
+    const normalizedTaskType = this.taskNameMap[taskType] || taskType;
+    const normalizedComplexity = this.complexityNameMap[complexity] || complexity;
+
+    const task = this.taskTypes.find(t => t.name === normalizedTaskType);
     if (!task) {
       // 默认预估
       return { min: 200, avg: 800, max: 2000 };
     }
-    
-    const key = complexity === '简单' ? '简单' : 
-                complexity === '复杂' ? '复杂' : '中等';
-    
+
+    const key = normalizedComplexity === '简单' ? '简单' :
+                normalizedComplexity === '复杂' ? '复杂' : '中等';
+
     return task.base_tokens[key] || task.base_tokens;
   }
   
@@ -247,20 +284,35 @@ class TokenEstimator {
   }
   
   /**
-   * 生成展示表格（Markdown 格式）
+   * 生成展示表格（Markdown 格式，支持 i18n）
    */
-  generateDisplayTable(estimate, costMin, costAvg, costMax) {
+  generateDisplayTable(estimate, costMin, costAvg, costMax, lang) {
+    const i18n = this.i18n;
     const timeRange = estimate.estimatedTime || '30-90 秒';
+
+    // Use i18n if available, otherwise fall back to Chinese defaults
+    const estimateLevel = i18n ? i18n.t('ui.estimate_level') : '预估级别';
+    const tokenCount = i18n ? i18n.t('ui.token_count') : 'Token 数量';
+    const estimatedCost = i18n ? i18n.t('ui.estimated_cost') : '预估成本';
+    const description = i18n ? i18n.t('ui.description') : '说明';
+    const minLabel = i18n ? i18n.t('ui.min') : '最小';
+    const avgLabel = i18n ? i18n.t('ui.avg') : '平均';
+    const maxLabel = i18n ? i18n.t('ui.max') : '最大';
+    const minDesc = i18n ? i18n.t('ui.min_desc') : '理想情况，一次过';
+    const avgDesc = i18n ? i18n.t('ui.avg_desc') : '标准情况，正常交互';
+    const maxDesc = i18n ? i18n.t('ui.max_desc') : '复杂情况，多轮调试';
+    const estTime = i18n ? i18n.t('ui.estimated_time') : '预计耗时';
+
     return `
 ┌─────────────┬──────────────┬──────────────┬─────────────────────┐
-│ 预估级别    │ Token 数量   │ 预估成本     │ 说明                │
+│ ${estimateLevel.padEnd(11)} │ ${tokenCount.padEnd(12)} │ ${estimatedCost.padEnd(12)} │ ${description.padEnd(19)} │
 ├─────────────┼──────────────┼──────────────┼─────────────────────┤
-│ 🟢 最小     │ ${String(estimate.min).padEnd(12)} │ ${this.formatCost(costMin).padEnd(12)} │ 理想情况，一次过     │
-│ 🟡 平均     │ ${String(estimate.avg).padEnd(12)} │ ${this.formatCost(costAvg).padEnd(12)} │ 标准情况，正常交互   │
-│ 🔴 最大     │ ${String(estimate.max).padEnd(12)} │ ${this.formatCost(costMax).padEnd(12)} │ 复杂情况，多轮调试   │
+│ 🟢 ${minLabel.padEnd(9)} │ ${String(estimate.min).padEnd(12)} │ ${this.formatCost(costMin).padEnd(12)} │ ${minDesc.padEnd(19)} │
+│ 🟡 ${avgLabel.padEnd(9)} │ ${String(estimate.avg).padEnd(12)} │ ${this.formatCost(costAvg).padEnd(12)} │ ${avgDesc.padEnd(19)} │
+│ 🔴 ${maxLabel.padEnd(9)} │ ${String(estimate.max).padEnd(12)} │ ${this.formatCost(costMax).padEnd(12)} │ ${maxDesc.padEnd(19)} │
 └─────────────┴──────────────┴──────────────┴─────────────────────┘
 │                                                                     │
-│  ⏱️ 预计耗时：${timeRange.padEnd(50)}  │
+│  ⏱️ ${estTime}：${timeRange.padEnd(50)}  │
     `.trim();
   }
   

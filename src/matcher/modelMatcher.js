@@ -18,6 +18,8 @@ class ModelMatcher {
       domestic: '参考：DeepSeek Flash ¥0.1/元 (≈$0.014)',
       international: '参考：GPT-4o-mini $0.15/千Token'
     };
+    // i18n instance (optional, set externally)
+    this.i18n = null;
   }
   
   /**
@@ -169,9 +171,10 @@ class ModelMatcher {
       candidates = candidates.filter(m => m.costNum <= budgetLimit);
       
       if (candidates.length === 0) {
+        const isEn = this.i18n && this.i18n.getLang() === 'en';
         return {
-          error: `所有模型都超出预算 ¥${budgetLimit.toFixed(4)}`,
-          suggestion: '请提高预算或选择免费模型',
+          error: isEn ? `All models exceed budget ¥${budgetLimit.toFixed(4)}` : `所有模型都超出预算 ¥${budgetLimit.toFixed(4)}`,
+          suggestion: isEn ? 'Please increase budget or select a free model' : '请提高预算或选择免费模型',
           candidates: []
         };
       }
@@ -522,9 +525,15 @@ class ModelMatcher {
    * 生成对比表格
    */
   generateComparisonTable(candidates) {
+    const isEn = this.i18n && this.i18n.getLang() === 'en';
+    const modelLabel = isEn ? 'Model' : '模型';
+    const priceLabel = isEn ? 'Price(/1K)' : '单价(/1K)';
+    const costLabel = isEn ? 'Est. Cost' : '预估成本';
+    const effectLabel = isEn ? 'Quality' : '效果评分';
+
     let table = `
 ┌──────────────┬─────────────┬──────────────────┬──────────────────────┐
-│ 模型         │ 单价(/1K)   │ 预估成本        │ 效果评分             │
+│ ${modelLabel.padEnd(12)} │ ${priceLabel.padEnd(11)} │ ${costLabel.padEnd(16)} │ ${effectLabel.padEnd(20)} │
 ├──────────────┼─────────────┼──────────────────┼──────────────────────┤
 `;
     
@@ -543,19 +552,27 @@ class ModelMatcher {
    */
   generateInsight(candidates) {
     if (candidates.length < 2) return '';
-    
+
+    const isEn = this.i18n && this.i18n.getLang() === 'en';
     const cheapest = candidates[candidates.length - 1];
     const costliest = candidates[0];
-    
-    const costRatio = cheapest.costNum > 0 
+
+    const costRatio = cheapest.costNum > 0
       ? (costliest.costNum / cheapest.costNum).toFixed(1)
       : '∞';
-    
+
     if (costRatio === '∞') {
-      return `💡 洞察：存在免费模型选项，推荐使用 ${candidates.find(m => m.costNum === 0).display_name}`;
+      const freeModel = candidates.find(m => m.costNum === 0);
+      const freeMsg = isEn
+        ? `💡 Insight: Free model option available, recommended: ${freeModel.display_name}`
+        : `💡 洞察：存在免费模型选项，推荐使用 ${freeModel.display_name}`;
+      return freeMsg;
     }
-    
-    return `💡 洞察：最贵模型成本是最便宜的 ${costRatio} 倍，请根据需求和预算选择`;
+
+    const ratioMsg = isEn
+      ? `💡 Insight: Most expensive model costs ${costRatio}x the cheapest; choose based on your needs and budget`
+      : `💡 洞察：最贵模型成本是最便宜的 ${costRatio} 倍，请根据需求和预算选择`;
+    return ratioMsg;
   }
   
   /**

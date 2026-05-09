@@ -8,14 +8,59 @@ const TokenEstimator = require('./src/estimator/tokenEstimator');
 const ModelMatcher = require('./src/matcher/modelMatcher');
 const RecommendationUI = require('./src/ui/recommendationUI');
 const PriceUpdateManager = require('./src/core/priceUpdater');
+const I18n = require('./src/i18n');
 
 class AIModelSelector {
   constructor(options = {}) {
+    // Load language from config or options
+    const config = this.loadConfig();
+    const lang = options.lang || config.language || 'zh';
+
+    // Initialize i18n
+    this.i18n = new I18n(lang);
+
     this.classifier = new TaskClassifier();
     this.estimator = new TokenEstimator();
     this.matcher = new ModelMatcher();
     this.ui = new RecommendationUI();
     this.priceManager = new PriceUpdateManager(options.priceManager || {});
+
+    // Pass i18n to sub-modules
+    this.estimator.i18n = this.i18n;
+    this.ui.i18n = this.i18n;
+    this.matcher.i18n = this.i18n;
+  }
+
+  /**
+   * Load config.json for language setting
+   */
+  loadConfig() {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const configPath = path.join(__dirname, 'config.json');
+      const configData = fs.readFileSync(configPath, 'utf8');
+      return JSON.parse(configData);
+    } catch (error) {
+      return { language: 'zh' };
+    }
+  }
+
+  /**
+   * Detect input language and switch i18n accordingly
+   * Simple heuristic: if >50% of characters are ASCII letters, treat as English
+   * @param {string} text - User input text
+   */
+  autoDetectLanguage(text) {
+    const isEnglish = I18n.detectEnglish(text);
+    const config = this.loadConfig();
+    const baseLang = config.language || 'zh';
+    // If user input is English, switch to English output; otherwise use base language
+    this.i18n.setLang(isEnglish ? 'en' : baseLang);
+    // Propagate to sub-modules
+    if (this.estimator.i18n) this.estimator.i18n = this.i18n;
+    if (this.ui.i18n) this.ui.i18n = this.i18n;
+    if (this.matcher.i18n) this.matcher.i18n = this.i18n;
   }
   
   /**
@@ -32,8 +77,11 @@ class AIModelSelector {
       updateMode = 'auto',            // auto / hourly / daily / manual
       forcePriceRefresh = false       // 强制刷新价格
     } = options;
-    
-    console.log('🚀 开始分析任务...\n');
+
+    // Auto-detect language from user input
+    this.autoDetectLanguage(userInput);
+
+    console.log(this.i18n.t('cli.analyzing') + '\n');
     
     // Step 0: 获取实时价格数据（带缓存）
     const { prices, meta: priceMeta } = await this.priceManager.getPrices({
@@ -68,8 +116,8 @@ class AIModelSelector {
     );
     
     if (matchResult.error) {
-      console.log('⚠️ ' + matchResult.error);
-      console.log('💡 ' + matchResult.suggestion);
+      console.log(this.i18n.t('warn.budget_exceeded'));
+      console.log(this.i18n.t('warn.budget_suggestion'));
       return matchResult;
     }
     
@@ -127,15 +175,18 @@ class AIModelSelector {
         return this.reselectPreferences();
         
       default:
-        return { error: '无效选择，请重新选择' };
+        return { error: this.i18n.t('warn.budget_suggestion') };
     }
   }
-  
+
   /**
    * 使用选定模型执行任务
    */
   async executeWithModel(model, context) {
-    console.log(`\n⚡ 正在使用 ${model.display_name} 执行任务...\n`);
+    const executingMsg = this.i18n.getLang() === 'en'
+      ? `\n⚡ Executing with ${model.display_name}...\n`
+      : `\n⚡ 正在使用 ${model.display_name} 执行任务...\n`;
+    console.log(executingMsg);
     
     // 这里应该调用实际的 AI 模型 API
     // 由于是演示，这里只返回模拟结果
@@ -148,9 +199,15 @@ class AIModelSelector {
       output: '这是模拟的输出结果...'
     };
     
-    console.log('✅ 任务执行完成！');
-    console.log(`📊 实际消耗：${mockResult.actualTokens} tokens`);
-    console.log(`💰 实际成本：${this.formatCost(mockResult.cost)}`);
+    console.log(this.i18n.t('cli.done'));
+    const tokenMsg = this.i18n.getLang() === 'en'
+      ? `📊 Actual usage: ${mockResult.actualTokens} tokens`
+      : `📊 实际消耗：${mockResult.actualTokens} tokens`;
+    console.log(tokenMsg);
+    const costMsg = this.i18n.getLang() === 'en'
+      ? `💰 Actual cost: ${this.formatCost(mockResult.cost)}`
+      : `💰 实际成本：${this.formatCost(mockResult.cost)}`;
+    console.log(costMsg);
     
     // 记录实际使用数据（用于优化预估）
     this.estimator.recordActualUsage(
@@ -168,16 +225,29 @@ class AIModelSelector {
    * 显示详细对比
    */
   showDetailedComparison(context) {
-    console.log('\n📈 详细对比分析\n');
-    // 这里生成更详细的对比表格
+    const header = this.i18n.getLang() === 'en' ? '\n📈 Detailed Comparison\n' : '\n📈 详细对比分析\n';
+    console.log(header);
     return { action: 'show_comparison', context };
   }
-  
+
   /**
    * 重新选择偏好
    */
   reselectPreferences() {
-    console.log('\n⚙️ 重新选择配置\n');
+    const isEn = this.i18n.getLang() === 'en';
+    console.log('\n⚙️ ' + (isEn ? 'Reselect Preferences' : '重新选择配置') + '\n');
+
+    if (isEn) {
+      console.log('Select accuracy level:');
+      console.log('  [1] Standard (fast, ±30% error)');
+      console.log('  [2] High precision (slower, ±10% error)');
+      console.log('\nSelect optimization preference:');
+      console.log('  [3] 🆓 Cost First');
+      console.log('  [4] ⚖️ Balanced');
+      console.log('  [5] 💎 Quality First');
+      return { action: 'reselect', prompt: 'Enter your choice (1-5): ' };
+    }
+
     console.log('请选择预估精度：');
     console.log('  [1] 标准精度（快速，±30% 误差）');
     console.log('  [2] 高精度（较慢，±10% 误差）');
@@ -185,7 +255,7 @@ class AIModelSelector {
     console.log('  [3] 🆓 省钱优先');
     console.log('  [4] ⚖️ 平衡模式');
     console.log('  [5] 💎 效果优先');
-    
+
     return { action: 'reselect', prompt: '请输入你的选择（1-5）：' };
   }
   
@@ -223,22 +293,23 @@ if (require.main === module) {
     input: process.stdin,
     output: process.stdout
   });
-  
+
   const selector = new AIModelSelector();
-  
-  console.log('🎯 AI 模型选择器');
+
+  console.log(selector.i18n.t('cli.title'));
   console.log('=================================\n');
-  
-  rl.question('请描述你的任务：', async (userInput) => {
+
+  const prompt = selector.i18n.t('cli.input_prompt');
+  rl.question(prompt, async (userInput) => {
     const result = await selector.selectModel(userInput, {
       accuracyMode: 'standard',
       optimizationPreference: 'balanced'
     });
-    
+
     if (result.success) {
-      rl.question('\n' + result.choicePrompt + '\n你的选择：', async (choice) => {
+      rl.question('\n' + result.choicePrompt + '\n' + (selector.i18n.getLang() === 'en' ? 'Your choice: ' : '你的选择：'), async (choice) => {
         const choiceResult = await selector.handleUserChoice(parseInt(choice), result);
-        console.log('\n✅ 完成！');
+        console.log('\n' + selector.i18n.t('cli.done'));
         rl.close();
       });
     } else {
