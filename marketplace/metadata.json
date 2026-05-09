@@ -1,0 +1,11 @@
+{
+  "name": "smart-task-model-selector",
+  "displayName": "Smart Task-Model Selector",
+  "version": "1.0.0",
+  "description": "智能分析任务类型，自动推荐最适合的AI模型，支持国内外平台、成本对比、双币种显示",
+  "author": "Your Name",
+  "tags": ["AI", "模型选择", "智能推荐", "代码生成", "文案写作", "翻译", "数据分析"],
+  "homepage": "https://github.com/your-username/smart-task-model-selector",
+  "repository": "https://github.com/your-username/smart-task-model-selector",
+  "keywords": ["AI model selector", "task matching", "cost comparison", "dual currency", "CNY USD"]
+}

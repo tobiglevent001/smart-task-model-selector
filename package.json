@@ -1,0 +1,44 @@
+{
+  "name": "smart-task-model-selector",
+  "version": "1.0.0",
+  "description": "智能任务模型选择器 - AI task-model matcher with dual currency cost display",
+  "main": "index.js",
+  "bin": {
+    "smart-model-selector": "./cli.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test-real-tasks.js",
+    "test:simple": "node simple-test.js"
+  },
+  "keywords": [
+    "ai",
+    "model-selector",
+    "task-matching",
+    "cost-comparison",
+    "openai",
+    "claude",
+    "deepseek",
+    "qwen",
+    "gpt",
+    "dual-currency",
+    "cny",
+    "usd"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/smart-task-model-selector"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/smart-task-model-selector/issues"
+  },
+  "homepage": "https://github.com/your-username/smart-task-model-selector#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "peerDependencies": {
+    "chalk": "^4.x || ^5.x"
+  }
+}

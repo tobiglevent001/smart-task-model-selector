@@ -1,0 +1,23 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#iconGrad)"/>
+  
+  <!-- Brain/circuit icon -->
+  <circle cx="64" cy="64" r="35" fill="none" stroke="white" stroke-width="3"/>
+  <path d="M64 35 L64 29 M64 93 L64 99 M35 64 L29 64 M93 64 L99 64" stroke="white" stroke-width="3"/>
+  <path d="M45 45 L50 50 M78 78 L83 83 M45 83 L50 78 M78 50 L83 45" stroke="white" stroke-width="2"/>
+  
+  <!-- Center dot -->
+  <circle cx="64" cy="64" r="12" fill="white"/>
+  
+  <!-- Selection arrows -->
+  <path d="M20 64 L35 64 L32 60 M20 64 L35 64 L32 68" fill="white" opacity="0.7"/>
+  <path d="M108 64 L93 64 L96 60 M108 64 L93 64 L96 68" fill="white" opacity="0.7"/>
+</svg>

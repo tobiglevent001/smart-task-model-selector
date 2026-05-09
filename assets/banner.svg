@@ -1,0 +1,30 @@
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="200" fill="url(#bgGrad)"/>
+  
+  <!-- Grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-opacity="0.05"/>
+  </pattern>
+  <rect width="800" height="200" fill="url(#grid)"/>
+  
+  <!-- Title -->
+  <text x="400" y="80" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="white" text-anchor="middle">Smart Task-Model Selector</text>
+  <text x="400" y="115" font-family="Arial, sans-serif" font-size="18" fill="#667eea" text-anchor="middle">智能任务模型选择器</text>
+  
+  <!-- Feature icons -->
+  <text x="200" y="160" font-family="Arial" font-size="14" fill="#888" text-anchor="middle">🧠 智能分析</text>
+  <text x="350" y="160" font-family="Arial" font-size="14" fill="#888" text-anchor="middle">🎯 精准推荐</text>
+  <text x="500" y="160" font-family="Arial" font-size="14" fill="#888" text-anchor="middle">💰 双币种</text>
+  <text x="650" y="160" font-family="Arial" font-size="14" fill="#888" text-anchor="middle">🌍 全平台</text>
+  
+  <!-- Version badge -->
+  <rect x="360" y="175" width="80" height="20" rx="10" fill="#667eea"/>
+  <text x="400" y="189" font-family="Arial" font-size="11" font-weight="bold" fill="white" text-anchor="middle">v1.0.0</text>
+</svg>

@@ -1,0 +1,319 @@
+# 模型能力数据库
+# 用于 Smart Task-Model Selector skill
+
+models:
+  # ==========================================
+  # 代码生成类模型
+  # ==========================================
+  
+  - name: "Qwen-Coder"
+    display_name: "通义千问 Coder"
+    category: "代码生成"
+    capabilities:
+      - "代码生成"
+      - "代码补全"
+      - "代码审查"
+      - "调试"
+    strengths:
+      - "开源免费"
+      - "中文友好"
+      - "8K 上下文"
+    weaknesses:
+      - "复杂架构较弱"
+      - "代码质量一般"
+    context_length: 8192
+    cost_per_1k_tokens: 0
+    free_tier: "完全免费"
+    api_available: true
+    recommended_for:
+      - "简单代码任务"
+      - "学习练习"
+      - "预算敏感"
+    score: 85
+    
+  - name: "DeepSeek-Coder"
+    display_name: "DeepSeek Coder"
+    category: "代码生成"
+    capabilities:
+      - "代码生成"
+      - "代码补全"
+      - "代码审查"
+      - "架构设计"
+    strengths:
+      - "性价比极高"
+      - "代码质量优秀"
+      - "16K 上下文"
+    weaknesses:
+      - "免费额度有限"
+      - "中文稍弱于 Qwen"
+    context_length: 16384
+    cost_per_1k_tokens: 0.001
+    free_tier: "500K tokens/月"
+    api_available: true
+    recommended_for:
+      - "生产环境代码"
+      - "中等复杂度任务"
+      - "性价比优先"
+    score: 92
+    
+  - name: "Claude Sonnet"
+    display_name: "Claude 3.5 Sonnet"
+    category: "代码生成"
+    capabilities:
+      - "代码生成"
+      - "代码审查"
+      - "架构设计"
+      - "重构"
+      - "调试"
+    strengths:
+      - "代码质量卓越"
+      - "架构设计优秀"
+      - "200K 超长上下文"
+      - "安全考虑完善"
+    weaknesses:
+      - "成本较高"
+      - "速度较慢"
+    context_length: 200000
+    cost_per_1k_tokens: 0.003
+    free_tier: "无"
+    api_available: true
+    recommended_for:
+      - "复杂架构设计"
+      - "生产级代码"
+      - "安全敏感项目"
+    score: 98
+    
+  - name: "GPT-4o"
+    display_name: "GPT-4o"
+    category: "代码生成"
+    capabilities:
+      - "代码生成"
+      - "多模态"
+      - "API 开发"
+    strengths:
+      - "通用能力强"
+      - "生态完善"
+      - "128K 上下文"
+    weaknesses:
+      - "成本较高"
+      - "代码质量略逊于 Claude"
+    context_length: 128000
+    cost_per_1k_tokens: 0.005
+    free_tier: "有限"
+    api_available: true
+    recommended_for:
+      - "多模态任务"
+      - "通用开发"
+    score: 90
+    
+  - name: "GPT-3.5-Turbo"
+    display_name: "GPT-3.5 Turbo"
+    category: "代码生成"
+    capabilities:
+      - "代码生成"
+      - "代码补全"
+    strengths:
+      - "成熟稳定"
+      - "速度快"
+      - "便宜"
+    weaknesses:
+      - "代码质量一般"
+      - "复杂逻辑较弱"
+    context_length: 16384
+    cost_per_1k_tokens: 0.0005
+    free_tier: "付费"
+    api_available: true
+    recommended_for:
+      - "简单代码任务"
+      - "快速原型"
+    score: 75
+    
+  # ==========================================
+  # 文案写作类模型
+  # ==========================================
+  
+  - name: "Claude Haiku"
+    display_name: "Claude 3.5 Haiku"
+    category: "文案写作"
+    capabilities:
+      - "文案写作"
+      - "短文生成"
+      - "翻译"
+    strengths:
+      - "速度快"
+      - "便宜"
+      - "200K 上下文"
+    weaknesses:
+      - "长文质量一般"
+    context_length: 200000
+    cost_per_1k_tokens: 0.00025
+    free_tier: "无"
+    api_available: true
+    recommended_for:
+      - "短文案"
+      - "快速生成"
+      - "翻译"
+    score: 82
+    
+  - name: "GPT-4o-mini"
+    display_name: "GPT-4o mini"
+    category: "文案写作"
+    capabilities:
+      - "文案写作"
+      - "对话"
+      - "翻译"
+    strengths:
+      - "便宜"
+      - "速度快"
+      - "128K 上下文"
+    weaknesses:
+      - "创意较弱"
+    context_length: 128000
+    cost_per_1k_tokens: 0.00015
+    free_tier: "有限"
+    api_available: true
+    recommended_for:
+      - "批量文案"
+      - "简单写作"
+    score: 78
+    
+  # ==========================================
+  # 搜索/研究类模型
+  # ==========================================
+  
+  - name: "Perplexity"
+    display_name: "Perplexity AI"
+    category: "搜索研究"
+    capabilities:
+      - "实时搜索"
+      - "研究分析"
+      - "引用来源"
+    strengths:
+      - "联网搜索"
+      - "引用准确"
+      - "综合能力强"
+    weaknesses:
+      - "成本较高"
+      - "API 限制"
+    context_length: 32768
+    cost_per_1k_tokens: 0.003
+    free_tier: "每日有限"
+    api_available: true
+    recommended_for:
+      - "实时信息搜索"
+      - "研究分析"
+    score: 88
+    
+  # ==========================================
+  # AI 绘画类模型
+  # ==========================================
+  
+  - name: "Stable Diffusion"
+    display_name: "Stable Diffusion"
+    category: "AI 绘画"
+    capabilities:
+      - "AI 绘画"
+      - "图片编辑"
+    strengths:
+      - "开源免费"
+      - "本地部署"
+      - "可定制"
+    weaknesses:
+      - "需要显卡"
+      - "效果略逊于 Midjourney"
+    context_length: null
+    cost_per_1k_tokens: 0
+    free_tier: "开源免费"
+    api_available: false
+    recommended_for:
+      - "免费绘画"
+      - "本地部署"
+    score: 80
+    
+  # ==========================================
+  # 数据分析类模型
+  # ==========================================
+  
+  - name: "Claude Sonnet"
+    display_name: "Claude 3.5 Sonnet"
+    category: "数据分析"
+    capabilities:
+      - "数据分析"
+      - "图表生成"
+      - "统计建模"
+    strengths:
+      - "分析能力强"
+      - "200K 上下文"
+      - "准确度高"
+    weaknesses:
+      - "成本较高"
+    context_length: 200000
+    cost_per_1k_tokens: 0.003
+    free_tier: "无"
+    api_available: true
+    recommended_for:
+      - "复杂数据分析"
+      - "研究报告"
+    score: 95
+
+# 任务类型定义
+task_types:
+  - name: "代码生成"
+    subtypes:
+      - "简单": "单个函数/类，< 100 行"
+      - "中等": "完整功能模块，100-500 行"
+      - "复杂": "多模块系统，> 500 行"
+    base_tokens:
+      min: 200
+      avg: 800
+      max: 2000
+      
+  - name: "代码审查"
+    subtypes:
+      - "简单": "< 100 行"
+      - "中等": "100-500 行"
+      - "复杂": "> 500 行"
+    base_tokens:
+      min: 300
+      avg: 800
+      max: 1500
+      
+  - name: "文案写作"
+    subtypes:
+      - "短": "< 500 字"
+      - "中": "500-2000 字"
+      - "长": "> 2000 字"
+    base_tokens:
+      min: 100
+      avg: 500
+      max: 2000
+      
+  - name: "搜索研究"
+    subtypes:
+      - "简单": "单一问题"
+      - "中等": "多源对比"
+      - "复杂": "深度研究"
+    base_tokens:
+      min: 200
+      avg: 800
+      max: 2000
+      
+  - name: "数据分析"
+    subtypes:
+      - "简单": "基础统计"
+      - "中等": "多维度分析"
+      - "复杂": "建模预测"
+    base_tokens:
+      min: 500
+      avg: 1500
+      max: 4000
+      
+  - name: "AI 绘画"
+    subtypes:
+      - "简单": "基础提示词"
+      - "中等": "详细提示词"
+      - "复杂": "多轮迭代"
+    base_tokens:
+      min: 50
+      avg: 150
+      max: 300
