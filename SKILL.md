@@ -1,125 +1,77 @@
-# Skill: Smart Task-Model Selector
+---
+name: smart-task-model-selector
+description: "Full reference implementation of an intelligent AI model selector — analyzes task type, estimates token consumption, and recommends the optimal model based on complexity, cost, and regional accessibility."
+version: 1.1.0
+author: tobiglevent001
+license: MIT
+metadata:
+  hermes:
+    tags: [model-selection, cost-optimization, task-classification, token-estimation, china-accessible, reference-implementation]
+    related_skills: [smart-task-model-selector]
+---
 
-## Description
-智能 AI 模型选择器 - 根据任务类型、Token 预估、成本预算自动推荐最优模型。支持动态选择预估精度和优化偏好。
+# Smart Task-Model Selector — Reference Implementation
 
-## Trigger Patterns
-- 用户询问"哪个模型适合..."
-- 用户需要控制 AI 使用成本
-- 用户想要性价比最优的模型选择
-- 关键词：模型选择、成本控制、Token 预估、性价比
+> 智能 AI 模型选择器 — 完整的 Node.js 参考实现，包含 7 个独立模块、测试套件和全面文档。
+>
+> Also available as a **Hermes Agent Skill** (lightweight decision framework): see the `smart-task-model-selector` skill loaded in the agent.
 
-## Core Features
+## 🌟 Overview
 
-### 1. 任务智能分析
-- 自动识别任务类型（代码/写作/分析/搜索/绘画等）
-- 评估任务复杂度（简单/中等/复杂）
-- 提取技术要求（语言、框架、特定能力）
+This is the **reference implementation** of the Smart Task-Model Selector concept. It's a complete, runnable Node.js application that:
 
-### 2. Token 消耗预估（三档）
-```
-┌─────────────┬──────────────┬──────────────┐
-│ 预估级别    │ Token 数量   │ 预估成本     │
-├─────────────┼──────────────┼──────────────┤
-│ 🟢 最小     │ XXX          │ ¥XXX         │
-│ 🟡 平均     │ XXX          │ ¥XXX         │
-│ 🔴 最大     │ XXX          │ ¥XXX         │
-└─────────────┴──────────────┴──────────────┘
-```
+1. **Analyzes** user tasks (9 types: code, writing, translation, research, data analysis, image gen, etc.)
+2. **Estimates** token consumption (min/avg/max three tiers with adjustable accuracy)
+3. **Recommends** the optimal model from 20+ models with cost, quality, and region awareness
+4. **Tracks** actual usage to improve future estimates
 
-### 3. 用户动态选择（核心！）
+The project is fully functional as a standalone tool, and the **decision framework** has been extracted into a lightweight Hermes Agent skill for agents that don't need the full code.
 
-#### 选择 1：预估精度
-```
-请选择 Token 预估精度：
-[1] 标准精度（快速，±30% 误差）- 推荐日常使用
-[2] 高精度（较慢，±10% 误差）- 适合预算敏感场景
-```
-
-#### 选择 2：优化偏好
-```
-请选择您的优化偏好：
-[1] 🆓 省钱优先 - 优先推荐免费/低成本模型
-[2] ⚖️ 平衡模式 - 性价比最优（推荐）
-[3] 💎 效果优先 - 优先推荐效果最好的模型
-[4] 💰 设置预算上限 - 自定义最高成本
-```
-
-### 4. 智能模型推荐（三档对比）
-```
-┌─────────────────────────────────────────────────────────────┐
-│  🥇 免费首选：XXX模型                                      │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │  成本区间：¥X - ¥X                                   │  │
-│  │  耗时区间：XX - XX 秒                                 │  │
-│  │  效果评估：⭐⭐⭐⭐                                    │  │
-│  │  ✅ 推荐理由：...                                     │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 5. 成本优化建议
-- 显示"最贵 vs 最便宜"的成本差距
-- 提示免费额度和替代方案
-- 预算超限时提供拆分建议
-
-## Workflow
+## 🏗️ Architecture
 
 ```
-Step 1: 任务分析（自动）
-  - 解析用户输入
-  - 识别任务类型和复杂度
-  - 提取技术要求
-      ↓
-Step 2: Token 预估（自动）
-  - 根据任务特征估算 Token 消耗
-  - 输出 Min/Avg/Max 三档预估
-      ↓
-Step 3: 精度选择（用户交互）
-  - 引导用户选择预估精度
-  - 根据选择调整预估算法
-      ↓
-Step 4: 偏好选择（用户交互）
-  - 引导用户选择优化偏好
-  - 或者设置预算上限
-      ↓
-Step 5: 模型推荐（自动）
-  - 根据精度、偏好、预算匹配模型
-  - 输出三档推荐（免费/性价比/效果最佳）
-      ↓
-Step 6: 用户确认（用户交互）
-  - 用户选择模型
-  - 或者要求"详细对比"
-      ↓
-Step 7: 执行任务（自动）
-  - 调用选定模型执行任务
-  - 追踪实际 Token 消耗
-  - 对比预估值（用于优化未来的预估）
+smart-task-model-selector/
+├── index.js                       # Main entry point — orchestrates the full pipeline
+├── cli.js                         # CLI runner (smart-model-selector command)
+├── package.json                   # npm package
+│
+├── src/
+│   ├── parser/
+│   │   └── taskClassifier.js      # [核心] 9 task types with keyword scoring + fuzzy matching
+│   ├── estimator/
+│   │   └── tokenEstimator.js      # [核心] Three-tier token estimation with history adjustment
+│   ├── matcher/
+│   │   └── modelMatcher.js        # [核心] 20+ models, scoring algorithm, regional preference
+│   ├── ui/
+│   │   └── recommendationUI.js    # Terminal UI with box-drawing charts
+│   ├── core/
+│   │   └── priceUpdater.js        # Real-time price fetching with OpenRouter API + caching
+│   └── config/
+│       └── ConfigManager.js       # User preference management
+│
+├── config/                        # Model database and pricing YAML files
+├── test.js                        # Basic tests
+├── simple-test.js                 # Quick smoke tests
+├── test-real-tasks.js             # Real-world scenario tests (9 scenarios)
+├── test-regional-preference.js    # Regional preference tests
+│
+├── USER-GUIDE.md                  # User guide with screenshots
+├── TEST-REPORT.md                 # Test results and coverage
+├── FIX-VERIFICATION.md            # Bug fix verification log
+├── README.md                      # Full documentation
+└── SKILL.md                       # This file
 ```
 
-## Configuration Parameters
+## ✨ Key Features
 
-### User-Selectable Parameters（用户每次可选择）
-- `accuracy_mode`: "standard" | "high"
-- `optimization_preference`: "cost" | "balanced" | "quality"
-- `budget_limit`: float（可选，成本上限）
+### 1. Intelligent Task Classification
+9 task types with keyword-based scoring + fuzzy matching:
+- 代码生成 (Code Generation), 代码审查 (Code Review), 代码调试 (Debugging)
+- 文案写作 (Writing), 翻译 (Translation), 搜索研究 (Research)
+- 数据分析 (Data Analysis), AI 绘画 (Image Gen), 图片处理 (Image Processing)
 
-### System Parameters（系统自动配置）
-- `model_database`: 模型能力矩阵（从 models.yaml 加载）
-- `pricing_data`: 实时价格数据（从 pricing.yaml 加载）
-- `history_data`: 历史任务数据（用于优化预估）
-
-## Examples
-
-### Example 1：代码生成任务
+### 2. Three-Tier Token Estimation
 ```
-用户："/smart-task-model-selector 帮我写一个用户登录功能"
-
-Step 1 输出：
-📋 任务类型：代码生成 - 中等复杂度
-🛠️ 技术要求：PHP + MySQL + Session
-
-Step 2 输出：
 ┌─────────────┬──────────────┬──────────────┐
 │ 预估级别    │ Token 数量   │ 预估成本     │
 ├─────────────┼──────────────┼──────────────┤
@@ -127,150 +79,86 @@ Step 2 输出：
 │ 🟡 平均     │ 1,200        │ ¥0.0006      │
 │ 🔴 最大     │ 2,500        │ ¥0.0013      │
 └─────────────┴──────────────┴──────────────┘
-
-Step 3：用户选择 [1] 标准精度
-
-Step 4：用户选择 [2] 平衡模式
-
-Step 5 输出：
-🥇 免费首选：Qwen-Coder（¥0 - ¥0）
-💰 性价比之选：DeepSeek-Coder（¥0.0004 - ¥0.0013）
-💎 效果最佳：Claude Sonnet（¥0.004 - ¥0.013）
-
-Step 6：用户选择 [2]
-
-Step 7：调用 DeepSeek-Coder 执行任务
 ```
 
-### Example 2：预算敏感场景
-```
-用户："/smart-task-model-selector 帮我写一篇 5000 字的小说"
+Adjustable accuracy: standard (±30%) or high (±10%) with history-based optimization.
 
-Step 1-2：...（任务分析和 Token 预估）
+### 3. 20+ Models with Matching Algorithm
+Built-in model database covering:
+- 🇨🇳 **Domestic CN**: DeepSeek Coder/V3, 通义千问 Coder/Long/Analysis/万相, Kimi, 百度翻译
+- 🌍 **International**: Claude Sonnet/Haiku/Opus, GPT-4o/4o-mini/3.5, Perplexity, DALL-E 3, Stable Diffusion, DeepL, Google Translate
 
-Step 3：用户选择 [2] 高精度
+### 4. Regional Preference System
+- Auto-detect accessible models based on user's region config
+- Score adjustment: -50 for inaccessible, +15 for preferred region
+- Access requirements labeling (✅ Free / ⚠️ API Key / ⚠️ Account needed)
 
-Step 4：用户选择 [4] 设置预算上限：¥0.50
+### 5. Dual Currency Display
+- 🇨🇳 CN models: ¥ primary + USD conversion
+- 🌍 INTL models: $ primary + CNY conversion
 
-Step 5：只推荐成本 ≤ ¥0.50 的模型
+### 6. Real-Time Price Updates
+- OpenRouter API integration for live pricing
+- Smart caching (configurable: auto/hourly/daily/manual)
+- Graceful fallback to default prices
 
-Step 6：用户选择...
+### 7. Regression Tests
+4 test files covering 20+ scenarios including regional preference, budget limits, and edge cases.
 
-Step 7：执行并追踪成本
-```
+## 🚀 Quick Start
 
-## Files Structure
+```bash
+# Install from GitHub
+git clone https://github.com/tobiglevent001/smart-task-model-selector.git
+cd smart-task-model-selector
+npm install
 
-```
-Smart Task-Model Selector/
-├── SKILL.md                    # 本文件
-├── README.md                   # 使用说明
-│
-├── src/
-│   ├── parser/
-│   │   └── taskClassifier.js   # 任务分类器
-│   ├── estimator/
-│   │   └── tokenEstimator.js   # Token 预估器
-│   ├── matcher/
-│   │   └── modelMatcher.js     # 模型匹配器
-│   └── ui/
-│       └── recommendationUI.js # 推荐界面生成器
-│
-├── config/
-│   ├── models.yaml             # 模型能力数据库
-│   └── pricing.yaml           # 价格配置
-│
-└── examples/
-    └── sample-conversations.md # 示例对话
-```
+# CLI mode
+node cli.js "帮我写一个用户登录功能"
 
-## Dependencies
-- 无外部依赖（纯数据处理和规则匹配）
-- 可选：接入实时价格 API（未来增强）
-
-## Author
-Senior Developer (高级开发工程师)
-
-## Version
-1.1.0 - 添加国内外平台偏好支持
-
----
-
-## 🔧 国内外平台偏好配置
-
-### 背景
-大多数国内用户无法直接访问 OpenAI、Claude、Perplexity 等国际平台。因此，我们实现了**智能区域偏好系统**，优先推荐用户能访问的模型。
-
-### 配置功能
-
-#### 首次使用配置向导
-```
-/smart-task-model-selector --config
-```
-或者在首次运行时自动启动配置向导。
-
-#### 交互式配置
-系统会询问：
-1. **国际平台访问**：是否有 OpenAI、Anthropic、Perplexity 等国际平台账号
-2. **国内平台账号**：拥有哪些国内平台（通义千问、DeepSeek、Kimi 等）
-3. **推荐偏好**：
-   - �🇳 **国内优先**（默认）：优先推荐国内平台
-   - 🌍 **国际优先**：优先推荐国际平台
-   - �🇳 **仅国内**：只推荐国内平台
-   - 🌍 **仅国际**：只推荐国际平台
-
-### 模型区域分类
-
-| 区域标识 | 平台示例 | 说明 |
-|----------|----------|------|
-| �🇳 国内 | 通义千问、DeepSeek、Kimi、百度翻译 | 国内可直接访问 |
-| 🌍 国际 | OpenAI、Anthropic、Perplexity、DeepL | 需要国际账号 |
-
-### 访问要求标注
-
-| 标识 | 说明 | 示例 |
-|------|------|------|
-| ✅ 免费使用 | 无需任何账号 | 通义千问 Long |
-| ⚠️ 需要注册账号 | 需要注册但可能有免费额度 | Kimi 网页版 |
-| ⚠️ 需要API Key | 需要获取 API 密钥 | DeepSeek API |
-
-### 配置文件位置
-`config.json` - 用户配置文件
-
-### 推荐优先级逻辑
-1. **可访问性优先**：无法访问的模型会被大幅降分（-50分）
-2. **区域偏好加分**：符合用户偏好的区域模型额外+15分
-3. **组合优化**：综合评分 = 模型评分 + 任务匹配度 + 成本适应度 + 区域偏好
-
-### 示例输出
-```
-╔═════════════════════════════════════════════════════════════════╗
-║  🥇 免费首选                                              ║
-╠═════════════════════════════════════════════════════════════════╣
-║  模型：通义千问 Long                                       ║
-║  区域：🇨🇳 国内                                            ║
-║  访问：✅ 免费使用                                          ║
-║  💰 成本：¥0 - ¥0                                         ║
-║  ⭐ 效果：⭐⭐⭐⭐                                         ║
-╚═════════════════════════════════════════════════════════════════╝
+# Programmatic API
+node -e "
+const Selector = require('./index.js');
+const s = new Selector();
+s.selectModel('帮我写一个用户登录功能', {
+  accuracyMode: 'standard',
+  optimizationPreference: 'balanced'
+}).then(r => console.log(r.display));
+"
 ```
 
-### 修改配置
-```javascript
-// 通过 ConfigManager 修改配置
-const ConfigManager = require('./src/config/ConfigManager');
-const manager = new ConfigManager();
+## 📋 Test Report Summary
 
-// 更新国内平台账号
-manager.updateConfig({
-  userAccess: {
-    hasDomesticAccounts: {
-      kimi: true,
-      deepseek: true
-    }
-  }
-});
-
-// 重置为默认配置
-manager.resetConfig();
 ```
+✓ 代码生成任务 - 关键词匹配测试
+✓ 文案写作任务 - 关键词匹配测试
+✓ 翻译任务 - 关键词匹配测试
+✓ 搜索研究任务 - 关键词匹配测试
+✓ 数据分析任务 - 关键词匹配测试
+✓ AI绘画任务 - 关键词匹配测试
+✓ 简单任务 - 复杂度评估测试
+✓ 复杂任务 - 复杂度评估测试
+✓ 中文技术要求提取测试
+✓ 用户区域偏好测试 (7 scenarios)
+```
+
+## 🤝 Relationship with Hermes Agent Skill
+
+This repository is the **full reference implementation** — runnable code you can inspect, test, and extend.
+
+The Hermes Agent Skill version (`smart-task-model-selector`) distills the **same decision framework** into a lightweight markdown skill that agents can follow directly, without running external code. It contains the core logic: task classification, token estimation, model selection matrix, regional preference rules, and cost optimization strategy.
+
+**Use this repo when you want to:**
+- Understand the full implementation details
+- Run tests and see actual outputs
+- Extend the model database or matching algorithm
+- Develop your own model selector based on this design
+
+**Use the Hermes Skill when you want:**
+- AI agents to make smart model selection decisions directly
+- Lightweight, zero-dependency recommendations
+- The same decision logic without running Node.js code
+
+## 📄 License
+
+MIT
