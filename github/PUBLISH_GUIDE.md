@@ -15,8 +15,8 @@
 - [ ] **CodeBuddy 账号** - 用于 CodeBuddy 市场发布
 
 ### 必需信息
-- [ ] GitHub 用户名（例如：`yourusername`）
-- [ ] npm 用户名（例如：`yournpmusername`）
+- [ ] GitHub 用户名（例如：`tobiglevent001`）
+- [ ] npm 用户名（例如：`tobiglevent001`）
 - [ ] 邮箱地址（用于验证）
 - [ ] 技能名称：`smart-task-model-selector`
 - [ ] 技能描述：智能任务模型选择器
